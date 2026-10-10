@@ -1,0 +1,56 @@
+# Verificação automática das atividades.
+# Para cada pasta com um arquivo .entregaveis (aulas e projeto), confere os arquivos listados
+# e as perguntas ainda sem resposta. Não atribui nota.
+name: Verificação das atividades
+
+on: [push, workflow_dispatch]
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Conferir cada aula
+        run: |
+          for lista in $(find . -name .entregaveis | sort); do
+            aula=$(dirname "$lista" | sed 's|^\./||')
+            faltando=0
+            while IFS= read -r arq; do
+              [ -z "$arq" ] && continue
+              if [ ! -s "$aula/$arq" ]; then faltando=$((faltando+1)); fi
+            done < "$aula/.entregaveis"
+            pendentes=$(grep -rl "_(responda aqui)_" --include=respostas.md --include=README.md "$aula" | wc -l)
+            vazias=$(grep -rl "(cole aqui a saída do terminal)" --include=respostas.md --include=README.md "$aula" | wc -l)
+            if [ "$faltando" -eq 0 ] && [ "$pendentes" -eq 0 ] && [ "$vazias" -eq 0 ]; then
+              echo "✅ $aula: completa"
+            else
+              echo "⏳ $aula: $faltando arquivo(s) faltando, $pendentes resposta(s) pendente(s), $vazias saída(s) do terminal não coladas"
+            fi
+          done
+
+      - name: Detalhar pendências
+        run: |
+          for lista in $(find . -name .entregaveis | sort); do
+            aula=$(dirname "$lista" | sed 's|^\./||')
+            echo "== $aula"
+            while IFS= read -r arq; do
+              [ -z "$arq" ] && continue
+              [ -s "$aula/$arq" ] || echo "   FALTANDO  $aula/$arq"
+            done < "$aula/.entregaveis"
+            grep -rl "_(responda aqui)_" --include=respostas.md --include=README.md "$aula" | sed 's/^/   RESPONDER /' || true
+            grep -rl "(cole aqui a saída do terminal)" --include=respostas.md --include=README.md "$aula" | sed 's/^/   COLAR SAÍDA /' || true
+          done
+          if grep -q "_(preencha)_" README.md; then echo "Preencha nome e matrícula no README.md"; fi
+
+      - name: Conferir codificação e privacidade
+        run: |
+          for f in $(git ls-files '*.txt' '*.json'); do
+            if head -c 2 "$f" | od -An -tx1 | grep -Eq 'ff fe|fe ff'; then
+              echo "UTF-16    $f  (gere de novo com | Out-File -Encoding utf8 ou com a opção -o do curl)"
+            fi
+          done
+          if git ls-files | grep -q 'cookies.txt'; then echo "ATENÇÃO: remova o cookies.txt do repositório"; fi
+          if grep -rEl '"origin": "[0-9]+\.[0-9]+' --include=*.txt --include=*.json . 2>/dev/null; then
+            echo "ATENÇÃO: há IP público no campo origin. Troque por \"(removido)\"."
+          fi
