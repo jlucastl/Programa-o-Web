@@ -12,20 +12,7 @@
 
 **1.1 Antes de executar: qual é o erro do código? Em que linha ele está?**
 
-_A estrutura HTML não está completa além de a tag <?php> não está fechada corretamente era nescessário o <?>.
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p><?php echo "Este texto foi escrito pelo PHP."; ?></p>
-</body>
-</html>
-_
+_O erro em si está na linha 2. O erro é a simples ausência de um ";". O php interpreta o fim de cada comando através do ";" como não tem o php interpreta a linha 2 e a linha 3 como uma só, gerando erro_
 
 ## 2. Saídas do terminal
 
