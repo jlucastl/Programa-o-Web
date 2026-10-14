@@ -1,8 +1,8 @@
 <?php
 const MEDIA_APROVACAO = 7;
 
-$n1 = 6.5;
-$n2 = 8.0;
+$n1 = (float) ($_GET['n1'] ?? 0);
+$n2 = (float) ($_GET['n2'] ?? 0);
 $media = ($n1 + $n2) / 2;
 $situacao = $media >= MEDIA_APROVACAO ? "Aprovado" : "Em recuperação";
 ?>
