@@ -23,14 +23,14 @@ Complete com todas as rotas do seu projeto.
 
 | URL | O que mostra | Status |
 |---|---|---|
-| `/` | | |
-| `/?pagina=habilidades` | | |
-| `/?pagina=projetos` | | |
-| `/?pagina=projeto&id=1` | | |
-| `/?pagina=projeto&id=99` | | |
-| `/?pagina=qualquercoisa` | | |
-| `/?tema=escuro` | | |
-| `/?formato=json` | | |
+| `/` | Exibe a página inicial com as informações do perfil. | 200 OK |
+| `/?pagina=habilidades` | Exibe a lista de habilidades do estudante. | 200 OK |
+| `/?pagina=projetos` | Exibe a lista de projetos desenvolvidos. | 200 OK |
+| `/?pagina=projeto&id=1` | Exibe os detalhes do projeto com ID 1. | 200 OK |
+| `/?pagina=projeto&id=99` | Exibe a página de projeto não encontrado. | 404 Not Found |
+| `/?pagina=qualquercoisa` | Exibe a página de rota não encontrada. | 404 Not Found |
+| `/?tema=escuro` | Salva o tema escuro em cookie e exibe a página inicial. | 200 OK |
+| `/?formato=json` | Retorna os dados do perfil e dos projetos em formato JSON. | 200 OK |
 
 ## 2. Saídas do terminal
 
