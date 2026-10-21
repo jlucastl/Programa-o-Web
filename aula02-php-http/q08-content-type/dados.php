@@ -7,4 +7,4 @@ $dados = [
     'alunos'     => 30,
 ];
 
-echo json_encode($dados, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+echo json_encode($dados, JSON_PRETTY_PRINT, JSON_UNESCAPED_UNICODE);
