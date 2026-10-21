@@ -1,3 +1,3 @@
 <?php
-$curso = "ADS"
+$curso = "ADS";
 echo "Bem-vindo ao curso de $curso";
